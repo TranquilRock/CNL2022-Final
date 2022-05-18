@@ -1,0 +1,49 @@
+<script src="lib/js/html5-qrcode.min.js"></script>
+<div class="row">
+    <div class="col">
+        <div style="width:500px;" id="reader"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var cameraId = null;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    Html5Qrcode.getCameras().then(devices => {
+        console.log(devices);
+        var flag = true;
+        for (i in devices) {
+            device = devices[i]
+            if (device['label'].toLowerCase().includes('rear') || device['label'].toLowerCase().includes('back')) {
+                cameraId = device.id;
+                flag = false;
+            }
+        }
+        if (flag) {
+            cameraId = devices[0].id;
+        }
+        if (cameraId == null) {
+            return;
+        }
+        const html5QrCode = new Html5Qrcode("reader", true);
+        html5QrCode.start(
+                cameraId, {
+                    fps: 10,
+                },
+                (decodedText, decodedResult) => {
+                    html5QrCode.stop().then((ignore) => {
+                        alert(decodedText);
+                        /* Retreve Here */
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                },
+                (errorMessage) => {
+                    console.log(errorMessage);
+                })
+            .catch((err) => {
+                console.log(err);
+            });
+    }).catch(err => {
+        console.log(err);
+    });
+</script>
