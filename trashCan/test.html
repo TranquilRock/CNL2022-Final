@@ -1,0 +1,64 @@
+<html lang="en">
+
+<head></head>
+
+<body>
+    <div id="reader">
+        <!-- Add captured if, PC browsers will ignore it. -->
+        <input type="file" id="qr-input-file" accept="image/*" capture>
+    </div>
+</body>
+
+<script src="https://raw.githubusercontent.com/mebjas/html5-qrcode/master/minified/html5-qrcode.min.js">
+    const html5QrCode = new Html5Qrcode(/* element id */ "reader");
+            alert("12324");
+
+    // File based scanning
+    const fileinput = document.getElementById('qr-input-file');
+    fileinput.addEventListener('change', e => {
+        alert("12312");
+        if (e.target.files.length == 0) {
+            // No file selected, ignore 
+            return;
+        }
+
+        // Use the first item in the list
+        const imageFile = e.target.files[0];
+        html5QrCode.scanFile(imageFile, /* showImage= */true)
+            .then(qrCodeMessage => {
+                // success, use qrCodeMessage
+                console.log(qrCodeMessage);
+            })
+            .catch(err => {
+                // failure, handle it.
+                console.log(`Error scanning file. Reason: ${err}`)
+            });
+    });
+</script>
+
+</html>
+
+
+<!-- <script src="https://unpkg.com/html5-qrcode" type="text/javascript">
+    // To use Html5QrcodeScanner (more info below)
+    import { Html5QrcodeScanner } from "html5-qrcode"
+
+    // To use Html5Qrcode (more info below)
+    import { Html5Qrcode } from "html5-qrcode"
+    function onScanSuccess(decodedText, decodedResult) {
+        // handle the scanned code as you like, for example:
+        console.log(`Code matched = ${decodedText}`, decodedResult);
+    }
+
+    function onScanFailure(error) {
+        // handle scan failure, usually better to ignore and keep scanning.
+        // for example:
+        console.warn(`Code scan error = ${error}`);
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+        "reader",
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+  /* verbose= */ false);
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+</script> -->

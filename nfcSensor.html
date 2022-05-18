@@ -1,0 +1,19 @@
+<button id="scanButton" hidden>Scan</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
+<script type="text/javascript">
+    scanButton = document.getElementById('scanButton');
+    scanButton.addEventListener("click", async () => {
+        try {
+            const ndef = new NDEFReader();
+            await ndef.scan();
+            ndef.addEventListener("reading", ({ message, serialNumber }) => {
+                var md5Value = md5(serialNumber);
+                alert(`> Serial Number: ${serialNumber} md5 value: ${md5Value}`);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    });
+    scanButton.click();
+
+</script>
