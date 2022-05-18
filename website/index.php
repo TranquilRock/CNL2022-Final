@@ -1,7 +1,9 @@
-<?php 
-require_once ("radius/dblink.php"); //set $db variable
+<?php include_once("debug/header.php"); ?>
 
-$current_reset_time = mktime(date("H"),0,0,date("n"),date("j"),date("Y"));
+<?php
+require_once("radius/dblink.php"); //set $db variable
+
+$current_reset_time = mktime(date("H"), 0, 0, date("n"), date("j"), date("Y"));
 
 $sql_cmd =
     "SELECT
@@ -32,7 +34,7 @@ $sql_result = $db->prepare($sql_cmd) or die();
 $sql_result->execute(array(':time' => $current_reset_time));
 $online_users = $sql_result->fetchall(PDO::FETCH_ASSOC);
 
-$warn_rate = (90/100);
+$warn_rate = (90 / 100);
 
 $limits = Get_User_Limit($db);
 
@@ -41,69 +43,69 @@ $ipaddress = get_client_ip();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<?php include_once ("html_comp/header.php"); ?>
+    <?php include_once("html_comp/header.php"); ?>
 </head>
 
 <body>
-    <?php require ("html_comp/bar.php") ?>
+    <?php require("html_comp/bar.php") ?>
 
-    <div class="container-fluid"><div class="row">
-        <!-- mean -->
-        <?php require ("html_comp/menu.php") ?>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- mean -->
+            <?php require("html_comp/menu.php") ?>
 
-        <main role="main" class="col-md-10 ml-sm-auto col-lg-10">
-            <?php if ($online_users) { ?>
-            <header class="flex-wrap flex-md-nowrap align-items-center">
-                <h2>Online User</h2>
-            </header>
-            <div class="table-responsive">
-                <table class="table table-hover table-sm">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Username</th>
-                        <th>Start time</th>
-                        <th>Session time</th>
-                        <th>traffic (Down+up)</th>
-                        <th>IP address</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($online_users as $user) {
-                        // limits time    unit  : Seconds
-                        // limits traffic unit  : kb;
-                        // accts  time    unit  : Seconds
-                        // accts  traffic unit  : bytes
+            <main role="main" class="col-md-10 ml-sm-auto col-lg-10">
+                <?php if ($online_users) { ?>
+                    <header class="flex-wrap flex-md-nowrap align-items-center">
+                        <h2>Online User</h2>
+                    </header>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Username</th>
+                                    <th>Start time</th>
+                                    <th>Session time</th>
+                                    <th>traffic (Down+up)</th>
+                                    <th>IP address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($online_users as $user) {
+                                    // limits time    unit  : Seconds
+                                    // limits traffic unit  : kb;
+                                    // accts  time    unit  : Seconds
+                                    // accts  traffic unit  : bytes
 
-                        $warn_time = $limits[$user['username']]['time']*$warn_rate;
-                        $warn_traf = $limits[$user['username']]['traf']*$warn_rate;
-                    ?>
-                    <tr>
-                        <td>
-                            <?=($ipaddress == $user["ip"])?
-                                '@':''?>
-                        </td>
-                        <td><?=$user["username"]?></td>
-                        <td><?=$user["start"]?></td>
-                        <td class="<?=(
-                            $warn_time < ($user["time"])
-                            )? 'bg-warning':''?>" >
-                            <?=gmdate("H:i:s", $user["time"])?>
-                        </td>
-                        <td class="<?=(
-                            $warn_traf < ($user["traffic"]/1024)
-                            )? 'bg-warning':''?>" >
-                            <?=formatBytes($user["traffic"])?>
-                        </td>
-                        <td><?=$user["ip"]?></td>
-                    </td>
-                    <?php } ?>
-                </tbody>
-                </table>
-            </div>
-            <?php } else { ?>
-                <div id="background"></div>
+                                    $warn_time = $limits[$user['username']]['time'] * $warn_rate;
+                                    $warn_traf = $limits[$user['username']]['traf'] * $warn_rate;
+                                ?>
+                                    <tr>
+                                        <td>
+                                            <?= ($ipaddress == $user["ip"]) ?
+                                                '@' : '' ?>
+                                        </td>
+                                        <td><?= $user["username"] ?></td>
+                                        <td><?= $user["start"] ?></td>
+                                        <td class="<?= ($warn_time < ($user["time"])
+                                                    ) ? 'bg-warning' : '' ?>">
+                                            <?= gmdate("H:i:s", $user["time"]) ?>
+                                        </td>
+                                        <td class="<?= ($warn_traf < ($user["traffic"] / 1024)
+                                                    ) ? 'bg-warning' : '' ?>">
+                                            <?= formatBytes($user["traffic"]) ?>
+                                        </td>
+                                        <td><?= $user["ip"] ?></td>
+                                        </td>
+                                    <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php } else { ?>
+                    <div id="background"></div>
                     <div class="top">
                         <h1 class="no">No Online User</h1>
                     </div>
@@ -116,56 +118,60 @@ $ipaddress = get_client_ip();
                         </div>
                         <div class="ghost">
                             <div class="ghost-face">
-                            <div class="ghost-eye"></div>
-                            <div class="ghost-eye-right"></div>
-                            <div class="ghost-mouth"></div>
+                                <div class="ghost-eye"></div>
+                                <div class="ghost-eye-right"></div>
+                                <div class="ghost-mouth"></div>
                             </div>
                         </div>
                         <div class="ghost-shadow"></div>
                     </div>
-            <?php } ?>
-        </main>
+                <?php } ?>
+            </main>
 
-    </div></div>
+        </div>
+    </div>
     <!-- footer -->
-    <?php require ("html_comp/footer.php") ?>
+    <?php require("html_comp/footer.php") ?>
 </body>
 
 </html>
 
 <?php
-function get_client_ip() {
+function get_client_ip()
+{
     $ipaddress = '';
     if (isset($_SERVER['HTTP_CLIENT_IP']))
-    $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-    else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-    $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    else if(isset($_SERVER['HTTP_X_FORWARDED']))
-    $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-    else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
-    $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-    else if(isset($_SERVER['HTTP_FORWARDED']))
-    $ipaddress = $_SERVER['HTTP_FORWARDED'];
-    else if(isset($_SERVER['REMOTE_ADDR']))
-    $ipaddress = $_SERVER['REMOTE_ADDR'];
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if (isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if (isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if (isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if (isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
     else
-    $ipaddress = 'UNKNOWN';
+        $ipaddress = 'UNKNOWN';
     return $ipaddress;
 }
 
-function formatBytes($bytes, $precision = 2) { 
-    $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB'); 
-    
-    $bytes = max($bytes, 0); 
-    $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
-    $pow = min($pow, count($units) - 1); 
-    
-    $bytes /= (1 << (10 * $pow)); 
-    
-    return round($bytes, $precision) . ' ' . $units[$pow]; 
+function formatBytes($bytes, $precision = 2)
+{
+    $units = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
+
+    $bytes /= (1 << (10 * $pow));
+
+    return round($bytes, $precision) . ' ' . $units[$pow];
 }
 
-function Get_User_Limit($db) {
+function Get_User_Limit($db)
+{
     $sql_cmd = "SELECT
                     `username`,
                     `groupname`
@@ -183,7 +189,7 @@ function Get_User_Limit($db) {
 
     foreach ($group_limits as $group_limit) {
         foreach ($users as $key => $user) {
-            if ( $group_limit['groupname'] == $user['groupname']) {
+            if ($group_limit['groupname'] == $user['groupname']) {
                 $users[$key][$group_limit['attribute']] = $group_limit['value'];
             }
         }
@@ -199,7 +205,7 @@ function Get_User_Limit($db) {
 
     foreach ($user_limits as $user_limit) {
         foreach ($users as $key => $user) {
-            if ( $user_limit['username'] == $user['username']) {
+            if ($user_limit['username'] == $user['username']) {
                 $users[$key][$user_limit['attribute']] = $user_limit['value'];
             }
         }
