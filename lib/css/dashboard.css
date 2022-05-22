@@ -1,104 +1,219 @@
-* {
-    overflow-x: hidden;
-}
-
 body {
-    background: linear-gradient(rgba(220, 20, 173, 0.5), rgba(212, 194, 208, 0.5)) no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover; 
-    background-size: 100% 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-}
+    font-size: .875rem;
+  }
 
-.container-fluid {
-    margin-bottom: 100px;
-}
+  /*
+   * main
+   */
 
+  main {
+    padding: 1rem 1.5rem 0 1.5rem;
+  }
+    main header {
+      margin-bottom: 1rem;
+      display: flex;
+      display: -webkit-box;
+      display: -ms-flexbox;
 
-.row {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    margin: 0;
-}
+      justify-content: space-between;
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+    }
 
-nav {
-    width: 100%;
-}
+    .close {
+      font-size: 1em;
+      line-height: 0;
+      float: none;
+    }
+    .alert-msg {
+      margin-left: 1em;
+    }
 
-.navbar-brand {
+  /*
+   * Sidebar
+   */
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  }
+  
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 48px;
+    height: calc(100vh - 48px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto; 
+  }
+  
+  .sidebar .nav-link {
+    font-weight: 500;
+    color: #585959;
+  }
+
+  .sidebar .nav-link.active {
+    color: #007bff;
+  }
+
+  /*
+   * Navbar
+   */
+  
+  .navbar-brand {
     padding-top: .75rem;
     padding-bottom: .75rem;
     font-size: 1rem;
     background-color: rgba(0, 0, 0, .25);
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-}
+  }
+  
+  /* No result */
+ 
+  @import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Lato');
 
-.buttonHeader {
-    padding-top: .75rem;
-    padding-bottom: .75rem;
-    margin: 5rem;
-}
-
-h2 {
-    color: #cf245f; 
-    font-family: 'Droid serif', serif; 
-    font-size: 48px; 
-    font-weight: 400; 
-    font-style: italic; 
-    line-height: 44px; 
-    margin: 0 0 12px; 
-    text-align: center;
-}
-
-.buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.button {
-    width:100px;
-    height:100px;
-}
-
-/* CSS */
-button {
-  background-color: #cf245f;
-  background-image: linear-gradient(to bottom right, #fcd34d, #ef4444, #ec4899);
-  border: 0;
-  border-radius: .25rem;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  font-family: ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-  font-size: 1.125rem; /* 18px */
-  font-weight: 600;
-  line-height: 1.75rem; /* 28px */
-  padding: 1rem 1.25rem;
-  text-align: center;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  margin: 10px;
-}
-
-button:hover {
-  box-shadow: none;
-}
-
-@media (min-width: 1024px) {
-    button {
-      font-size: 1.5rem; /* 24px */
-      padding: 1rem 1.5rem;
-      line-height: 2rem; /* 32px */
+  .top {
+    margin: 30px 0 60px 0;
+  }
+  
+  .ghost-container {
+    margin: 0 auto;
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin-top: -40px;
+  }
+  
+  .ghost {
+    width: 50%;
+    height: 53%;
+    left: 25%;
+    top: 10%;
+    position: absolute;
+    border-radius: 50% 50% 0 0;
+    background: #EDEDED;
+    border: 1px solid #BFC0C0;
+    border-bottom: none;
+    animation: ghost-float 2s ease-out infinite;
+  }
+  
+  .ghost-copy {
+    width: 50%;
+    height: 53%;
+    left: 25%;
+    top: 10%;
+    position: absolute;
+    border-radius: 50% 50% 0 0;
+    background: #EDEDED;
+    border: 1px solid #BFC0C0;
+    border-bottom: none;
+    animation: ghost-float 2s ease-out infinite;
+    z-index: 0;
+  }
+  
+  .ghost-face {
+    position: absolute;
+    width: 100%;
+    height: 60%;
+    top: 20%;
+  }
+  .ghost-eye, .ghost-eye-right {
+    position: absolute;
+    background: #585959;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    top: 40%;
+  }
+  
+  .ghost-eye {
+    left: 25%;
+  }
+  .ghost-eye-right {
+    right: 25%;
+  }
+  
+  .ghost-mouth {
+    position:absolute;
+    top: 50%;
+    left: 45%;
+    width: 10px;
+    height: 10px;
+    border: 3px solid;
+    border-radius: 50%;
+    border-color: transparent #585959 #585959 transparent;
+    transform: rotate(45deg);
+  }
+  
+  .ghost-one, .ghost-two, .ghost-three, .ghost-four {
+    position: absolute;
+    background: #EDEDED;
+    top: 85%;
+    width: 25%;
+    height: 23%;
+    border: 1px solid #BFC0C0;
+    z-index: 0;
+  }
+  
+  .ghost-one {
+    border-radius: 0 0 100% 30%;
+    left: -1px;
+  }
+  
+  .ghost-two {
+    left: 23%;
+    border-radius: 0 0 50% 50%;
+  }
+  
+  .ghost-three {
+    left: 50%;
+    border-radius: 0 0 50% 50%;
+  }
+  
+  .ghost-four {
+    left: 76%;
+    border-radius: 0 0 30% 100%;
+  }
+  
+  .ghost-shadow {
+    position: absolute;
+    width: 30%;
+    height: 7%;
+    background: #BFC0C0;
+    left: 35%;
+    top: 80%;
+    border-radius: 50%;
+    animation: ghost-shadow-scale 2s infinite;
+  }
+  
+  @keyframes ghost-shadow-scale {
+    0% {
+      transform: scale(1);
     }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes ghost-float {
+    50% {
+       transform: translateY(15px);
+    }
+  }
+
+  h1.no {
+    color: #EDEDED;
+    text-align: center;
+    font-size: 6em;
+    margin: 0;
+    text-shadow: -1px 0 #BFC0C0, 0 1px #BFC0C0, 1px 0 #BFC0C0, 0 -1px #BFC0C0;
   }

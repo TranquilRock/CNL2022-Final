@@ -46,14 +46,14 @@ function res_controller($res)
 
 <body>
     <?php require("html_comp/bar.php") ?>
+
     <div class="container-fluid">
         <div class="row">
-            
             <!-- mean -->
-            <!-- <?php require("html_comp/menu.php") ?> -->
+            <?php require("html_comp/menu.php") ?>
 
-            <main  role="main">
-                <div class="buttonHeader">
+            <main role="main" class="col-md-10 ml-sm-auto col-lg-10">
+                <div class="flex-wrap flex-md-nowrap align-items-center">
                     <h2>Select Login Method</h2>
                 </div>
 
@@ -95,11 +95,8 @@ function res_controller($res)
                 </form>
 
             </main>
-            <img>
-            <div class="buttons">
-                <button id="nfcButton"><img class="button" src="./lib/images/nfc.png"/></button>
-                <button id="qrButton"><img class="button" src="./lib/images/qrcode.png"/></button>
-            </div>
+            <button id="nfcButton">NFC</button>
+            <button id="qrButton">QR-Code</button>
             <div class="row">
                 <div class="col">
                     <div style="width:1000px;" id="reader"></div>
