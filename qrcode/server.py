@@ -1,4 +1,3 @@
-# Python 3 server example
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import utils
@@ -6,7 +5,7 @@ import const
 
 
 class HandleServer(BaseHTTPRequestHandler):
-    cnx = utils.create_mysql_connection("127.0.0.1",
+    cnx = utils.create_mysql_connection(const.SQL_HOST,
             const.ROOT_ACCOUNT, const.ROOT_PASSWORD, const.DATABASE)
     # new guest account and password
     account = None
@@ -44,19 +43,37 @@ class HandleServer(BaseHTTPRequestHandler):
     def _create_guest_account(cls):
         cls.account = utils.get_random_string(length=const.ACCOUNT_LEN)
         cls.password = utils.get_random_string(length=const.PASSWORD_LEN)
-        # TODO: save into database
+        query = f"SELECT count(*) FROM radcheck WHERE username = {cls.account};"
+        while read_query(cls.cnx, query)[0][0] > 0:
+            cls.account = utils.get_random_string(length=const.ACCOUNT_LEN)
+            cls.password = utils.get_random_string(length=const.PASSWORD_LEN)
+        query = f"""
+            INSERT INTO radcheck (username, attribute, op, value)
+            VALUES ('{cls.account}', 'Cleartext-Password', ':=', '{cls.password}');
+            INSERT INTO radcheck (username, attribute, op, value)
+            VALUES ('{cls.account}', 'Max-All-Session', ':=', {const.MAX_ALL_SESSION});
+            INSERT INTO radcheck (username, attribute, op, value)
+            VALUES ('{cls.account}', 'Max-All-Traffic', ':=', {const.MAX_ALL_TRAFFIC});
+            INSERT INTO radusergroup (username, groupname)
+            VALUES ('{cls.account}', 'guest');
+        """
+        execute_query(cls.cnx, query)
         return cls.account + cls.password
 
     @classmethod
     def _guest_account_is_used(cls):
         if cls.account is None:
             return True
-        # TODO
-        return False
+        query = f"SELECT count(*) FROM radacct WHERE username = {cls.account};"
+        return (read_query(cls.cnx, query)[0][0] > 0)
+
+    @classmethod
+    def _remove_all_guest_account(cls):
+        pass
 
 
 class QRCodeServer:
-    def __init__(self, hostname='127.0.0.1', port=8081):
+    def __init__(self, hostname='127.0.0.1', port=8888):
         self.hostname = hostname
         self.port = port
         self.webserver = HTTPServer((self.hostname, self.port), HandleServer)
@@ -71,7 +88,7 @@ class QRCodeServer:
 
 
 def main():
-    server = QRCodeServer(hostname='127.0.0.1', port=8081)
+    server = QRCodeServer(hostname=const.SERVER_HOST, port=const.SERVER_PORT)
     server.run()
 
 
