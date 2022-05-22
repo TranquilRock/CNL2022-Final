@@ -1,7 +1,7 @@
 # MySQL login information
 ROOT_ACCOUNT = "root"
-ROOT_PASSWORD = "chungentsai891007mac"
-DATABASE = None
+ROOT_PASSWORD = "123456"
+DATABASE = "radius"
 
 # guest account basic
 ACCOUNT_LEN = 16
