@@ -7,8 +7,8 @@ if (isset($_GET['reply'])) {
 }
 function redirect($url)
 {
-    // $prama = "?uamip=" . $_GET['uamip'] . "&uamport=" . $_GET['uamport'];
-    header('Location: ' . 'google.html', true, 302);
+    $prama = "?uamip=" . $_GET['uamip'] . "&uamport=" . $_GET['uamport'];
+    header('Location: ' . $url . $prama, true, 302);
     exit();
 }
 
@@ -26,7 +26,7 @@ function res_controller($res)
         case 'already':
             return "This IP address already login.";
         case 'success':
-            redirect("index.php");
+            redirect("google.php");
     }
 }
 ?>
