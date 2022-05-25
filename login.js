@@ -7,6 +7,7 @@ qrButton = document.getElementById('qrButton');
 typeinButton = document.getElementById('typeinButton');
 loading = document.getElementById('loading');
 loading.src = "./lib/images/loading.gif";
+scanning = document.getElementById('scanning');
 
 try {
     new NDEFReader();
@@ -53,18 +54,15 @@ password = document.getElementById('password');
 username = document.getElementById('username');
 
 // Start NFC-SCAN
-const abortController = new AbortController();
-abortController.signal.onabort = event => {
-    alert("Success");
-};
-document.querySelector("#abortnfcButton").onclick = event => {
-    abortController.abort();
-};
 
 nfcButton.addEventListener("click", async () => {
+    nfcButton.hidden = true;
+    qrButton.hidden = true;
+    // typeinButton.hidden = true;
+    scanning.hidden = false;
     try {
         var ndef = new NDEFReader();
-        await ndef.scan({ signal: abortController.signal });
+        await ndef.scan();
         ndef.addEventListener("reading", (message, serialNumber) => {
             username.value = serialNumber;
             password.value = serialNumber;
@@ -73,6 +71,12 @@ nfcButton.addEventListener("click", async () => {
     } catch (error) {
         alert(error);
     }
+});
+
+scanning.addEventListener("click", async () => {
+    nfcButton.hidden = false;
+    scanning.hidden = true;
+    qrButton.hidden = !CAM_Available;
 });
 
 typeinButton.addEventListener('click', () => {

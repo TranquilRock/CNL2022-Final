@@ -51,10 +51,11 @@
             <img id="loading" />
 
             <div class="buttons">
+                <button id="scanning" hidden><img src="./lib/images/scanning.gif"/></button>
                 <button id="nfcButton" hidden><img class="button" src="./lib/images/nfc.png" /></button>
                 <button id="qrButton" hidden><img class="button" src="./lib/images/qrcode.png" /></button>
-                <button id="typeinButton" hidden>TypeIn</button>
             </div>
+            <button id="typeinButton" hidden><img class="button" src="./lib/images/typing.png" /></button>
             <div class="row1">
                 <div class="col1">
                     <div id="reader"></div>
