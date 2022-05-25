@@ -49,11 +49,11 @@ class HandleServer(BaseHTTPRequestHandler):
             VALUES ('{account}', 'Cleartext-Password', ':=', '{account}');
             INSERT INTO radcheck (username, attribute, op, value)
             VALUES ('{account}', 'Max-All-Session', ':=', {session});
-            INSERT INTO radcheck (username, attribute, op, value)
+            INSERT INTO radusergroup (username, groupname)
             VALUES ('{account}', 'guest');
         """.format(account=cls.account, session=const.MAX_ALL_SESSION)
+        #INSERT INTO radcheck (username, attribute, op, value)
         #VALUES ('{cls.account}', 'Max-All-Traffic', ':=', {const.MAX_ALL_TRAFFIC});
-        #INSERT INTO radusergroup (username, groupname)
         execute_query(cls.cnx, query)
         return cls.account
 
