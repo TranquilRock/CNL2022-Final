@@ -15,7 +15,7 @@
 
             <main role="main">
                 <div class="buttonHeader">
-                    <h2>Select Login Method</h2>
+                    <h2 id='ggh2'>Select Login Method</h2>
                 </div>
                 <form name="radius-login" id="loginframe" method="get" action="process_login.php" hidden>
                     <div class="form-group">

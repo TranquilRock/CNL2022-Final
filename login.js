@@ -63,9 +63,10 @@ nfcButton.addEventListener("click", async () => {
     try {
         var ndef = new NDEFReader();
         await ndef.scan();
-        ndef.addEventListener("reading", (message, serialNumber) => {
-            username.value = serialNumber;
-            password.value = serialNumber;
+        ndef.addEventListener("reading", ({message, serialNumber}) => {
+            username.value = md5(serialNumber);
+            password.value = md5(serialNumber);
+            // document.getElementById('ggh2').innerHTML = md5(serialNumber);
             Login.click();
         });
     } catch (error) {
