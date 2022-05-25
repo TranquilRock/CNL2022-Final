@@ -27,7 +27,7 @@ class HandleServer(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
-        self.wfile.write(bytes("<html><head><link rel='icon' href='data:,'><title>Welcome</title></head>", "utf-8"))
+        self.wfile.write(bytes("<html><head><title>Welcome</title></head>", "utf-8"))
         self.wfile.write(bytes("<center><img src='qrcode' alt='Something went wrong'></center>", "utf-8"))
         self.wfile.write(bytes("<meta http-equiv='refresh' content='1'>", "utf-8"))
         self.wfile.write(bytes("</body></html>", "utf-8"))
@@ -40,12 +40,12 @@ class HandleServer(BaseHTTPRequestHandler):
         self.end_headers()
         with open('./qrcode.png', 'rb') as f:
             self.wfile.write(f.read())
-    
+
     def _handle_favicon(self):
         self.send_response(200)
         self.send_header("Content-type", "/image/jpeg")
         self.end_headers()
-        with open('./favicon.jpeg', 'rb') as f:
+        with open('./asset/favicon.png', 'rb') as f:
             self.wfile.write(f.read())
 
     @classmethod
