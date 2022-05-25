@@ -17,7 +17,6 @@
                 <div class="buttonHeader">
                     <h2>Select Login Method</h2>
                 </div>
-
                 <form name="radius-login" id="loginframe" method="get" action="process_login.php" hidden>
                     <div class="form-group">
                         <label for="username">Username</label>
@@ -49,7 +48,7 @@
                 </form>
 
             </main>
-            <img>
+            <img id="loading"/>
 
             <div class="buttons">
                 <button id="nfcButton" hidden><img class="button" src="./lib/images/nfc.png" /></button>

@@ -4,7 +4,8 @@ var NFC_Available = false;
 var CAM_Available = false;
 nfcButton = document.getElementById('nfcButton');
 qrButton = document.getElementById('qrButton');
-
+loading = document.getElementById('loading');
+loading.src = "./lib/images/loading.gif";
 
 try {
     new NDEFReader();
@@ -35,12 +36,15 @@ Html5Qrcode.getCameras().then(devices => {
     }
 }).catch(e => {}).then(() => {
     if (CAM_Available) {
+        loading.hidden = true;
         qrButton.hidden = false;
     }
     if (NFC_Available) {
+        loading.hidden = true;
         nfcButton.hidden = false;
     }
     if (!(CAM_Available || NFC_Available)) {
+        loading.hidden = true;
         document.getElementById('loginframe').hidden = false;
     }
 });
