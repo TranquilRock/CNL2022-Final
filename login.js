@@ -7,7 +7,7 @@ qrButton = document.getElementById('qrButton');
 typeinButton = document.getElementById('typeinButton');
 loading = document.getElementById('loading');
 loading.src = "./lib/images/loading.gif";
-scanning = document.getElementById('scanning');
+NFCscanningBTN = document.getElementById('scanning');
 
 try {
     new NDEFReader();
@@ -58,8 +58,8 @@ username = document.getElementById('username');
 nfcButton.addEventListener("click", async () => {
     nfcButton.hidden = true;
     qrButton.hidden = true;
-    // typeinButton.hidden = true;
-    scanning.hidden = false;
+    typeinButton.hidden = true;
+    NFCscanningBTN.hidden = false;
     try {
         var ndef = new NDEFReader();
         await ndef.scan();
@@ -73,15 +73,26 @@ nfcButton.addEventListener("click", async () => {
     }
 });
 
-scanning.addEventListener("click", async () => {
+NFCscanningBTN.addEventListener("click", async () => {
     nfcButton.hidden = false;
-    scanning.hidden = true;
+    NFCscanningBTN.hidden = true;
+
     qrButton.hidden = !CAM_Available;
+    typeinButton.hidden = false;
 });
 
+
 typeinButton.addEventListener('click', () => {
-    typeinButton.hidden = true;
-    document.getElementById('loginframe').hidden = false;
+    var frame = document.getElementById('loginframe');
+    if(frame.hidden){
+        frame.hidden = false;
+        qrButton.hidden = true;
+        nfcButton.hidden = true;
+    }else{
+        frame.hidden = true;
+        qrButton.hidden = !CAM_Available;
+        nfcButton.hidden = !NFC_Available;
+    }
 });
 
 
@@ -101,8 +112,12 @@ qrButton.addEventListener("click", async () => {
             },
             () => { }
         ).catch(() => { });
+        typeinButton.hidden = true;
+        nfcButton.hidden = true;
     } catch (e) {
         html5QrCode.stop();
+        typeinButton.hidden = false;
+        nfcButton.hidden = !NFC_Available;
     }
 });
 
