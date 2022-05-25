@@ -14,7 +14,7 @@ class HandleServer(BaseHTTPRequestHandler):
         super(HandleServer, self).__init__(*args, **kwargs)
 
     def do_GET(self):
-        print(f'[PATH] - {self.path}')
+        print('[PATH] - {p}'.format(p=self.path))
         if self.path == '/':
             self._handle_root()
         elif self.path.startswith('/qrcode'):
