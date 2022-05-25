@@ -33,12 +33,12 @@
 
                         <label for="uamip">IP address</label>
                         <input type="text" class="form-control" name="uamip" id="uamip" readonly value="<?= $_GET['uamip'] ?>">
-                        
+
                         <div class="form-group">
                             <label for="uamport">UAM Port</label>
                             <input type="text" class="form-control" name="uamport" id="uamport" readonly value="<?= $_GET['uamport'] ?>">
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="userurl">URL</label>
                             <input type="text" class="form-control" name="userurl" id="userurl" readonly value="<?= $_GET['userurl'] ?>">
@@ -48,9 +48,10 @@
                 </form>
 
             </main>
-            <img id="loading"/>
+            <img id="loading" />
 
             <div class="buttons">
+                <button id="abortnfcButton">123</button>
                 <button id="nfcButton" hidden><img class="button" src="./lib/images/nfc.png" /></button>
                 <button id="qrButton" hidden><img class="button" src="./lib/images/qrcode.png" /></button>
             </div>
