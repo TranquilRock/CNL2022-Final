@@ -16,25 +16,33 @@ Html5Qrcode.getCameras().then(devices => {
         cameraId = devices[0].id;
     }
     if(cameraId != null){
-        CAM_Available = True;
+        qrButton.hidden = false;
+        CAM_Available = true;
     }
-}).catch((err) => {
-    alert(err);
 });
 
 try {
     new NDEFReader();
-    NFC_Available = True;
+    NFC_Available = true;
+    nfcButton.hidden = false;
 } catch (error) {
-    alert(error);
+    console.log(error);
 }
-console.log((NFC_Available || CAM_Available));
+
+// document.getElementById('loginframe').hidden = false;
+
+nfcButton = document.getElementById('nfcButton');
+qrButton = document.getElementById('qrButton');
+
+
+
+
+
 Login = document.getElementById('Login');
 password = document.getElementById('password');
 username = document.getElementById('username');
 
 // Start NFC-SCAN
-nfcButton = document.getElementById('nfcButton');
 nfcButton.addEventListener("click", async () => {
     try {
         const ndef = new NDEFReader();
@@ -59,7 +67,6 @@ nfcButton.addEventListener("click", async () => {
 
 
 // Start QR-SCAN
-qrButton = document.getElementById('qrButton');
 
 qrButton.addEventListener("click", async () => {
     if (cameraId == null) {
