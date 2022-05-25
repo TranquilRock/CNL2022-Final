@@ -55,7 +55,7 @@ class HandleServer(BaseHTTPRequestHandler):
         #VALUES ('{cls.account}', 'Max-All-Traffic', ':=', {const.MAX_ALL_TRAFFIC});
         #INSERT INTO radusergroup (username, groupname)
         execute_query(cls.cnx, query)
-        return cls.account + cls.password
+        return cls.account
 
     @classmethod
     def _guest_account_is_used(cls):
