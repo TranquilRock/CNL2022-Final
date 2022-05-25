@@ -1,5 +1,6 @@
 * {
-    overflow-x: hidden;
+    /* border-style: solid; */
+    /* overflow-x: hidden; */
 }
 
 body {
@@ -42,8 +43,7 @@ nav {
 }
 
 .buttonHeader {
-    padding-top: .75rem;
-    padding-bottom: .75rem;
+    padding: .75rem;
     margin: 5rem;
 }
 
@@ -56,6 +56,7 @@ h2 {
     line-height: 44px; 
     margin: 0 0 12px; 
     text-align: center;
+    width: 100%;
 }
 
 .buttons {
@@ -95,10 +96,14 @@ button:hover {
   box-shadow: none;
 }
 
+#reader {
+    z-index: 2;
+}
+
 @media (min-width: 1024px) {
     button {
       font-size: 1.5rem; /* 24px */
       padding: 1rem 1.5rem;
       line-height: 2rem; /* 32px */
     }
-  }
+}

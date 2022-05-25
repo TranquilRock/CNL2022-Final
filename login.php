@@ -1,4 +1,4 @@
-<?php include_once("debug/header.php"); ?>
+
 <?php
 
 // $msg = res_controller($_GET['res']);
@@ -41,7 +41,7 @@ function res_controller($res)
 
 <head>
     <?php include_once("html_comp/header.php"); ?>
-    <?php include_once("debug/header.php"); ?>
+    <!-- <?php include_once("debug/header.php"); ?> -->
 </head>
 
 <body>
@@ -50,7 +50,7 @@ function res_controller($res)
         <div class="row">
             
             <!-- mean -->
-            <!-- <?php require("html_comp/menu.php") ?> -->
+            <?php require("html_comp/menu.php") ?>
 
             <main  role="main">
                 <div class="buttonHeader">
@@ -100,9 +100,9 @@ function res_controller($res)
                 <button id="nfcButton"><img class="button" src="./lib/images/nfc.png"/></button>
                 <button id="qrButton"><img class="button" src="./lib/images/qrcode.png"/></button>
             </div>
-            <div class="row">
-                <div class="col">
-                    <div style="width:1000px;" id="reader"></div>
+            <div class="row1">
+                <div class="col1">
+                    <div id="reader"></div>
                 </div>
             </div>
         </div>
