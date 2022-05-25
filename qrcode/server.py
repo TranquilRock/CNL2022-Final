@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import time
 import utils
 import const
+import datetime
 
 
 class HandleServer(BaseHTTPRequestHandler):
@@ -14,7 +15,7 @@ class HandleServer(BaseHTTPRequestHandler):
         super(HandleServer, self).__init__(*args, **kwargs)
 
     def do_GET(self):
-        print('[PATH] - {p}'.format(p=self.path))
+        print(f"[PATH] - {self.path}")
         if self.path == '/':
             self._handle_root()
         elif self.path.startswith('/qrcode'):
@@ -41,27 +42,28 @@ class HandleServer(BaseHTTPRequestHandler):
     @classmethod
     def _create_guest_account(cls):
         cls.account = utils.get_random_string(length=const.ACCOUNT_LEN)
-        query = "SELECT count(*) FROM radcheck WHERE username = {account};".format(account=cls.account)
+        query = f"SELECT count(*) FROM radcheck WHERE username = '{cls.account}';"
         while utils.read_query(cls.cnx, query)[0][0] > 0:
             cls.account = utils.get_random_string(length=const.ACCOUNT_LEN)
-        query = """
-            INSERT INTO radcheck (username, attribute, op, value)
-            VALUES ('{account}', 'Cleartext-Password', ':=', '{account}');
-            INSERT INTO radcheck (username, attribute, op, value)
-            VALUES ('{account}', 'Max-All-Session', ':=', {session});
-            INSERT INTO radusergroup (username, groupname)
-            VALUES ('{account}', 'guest');
-        """.format(account=cls.account, session=const.MAX_ALL_SESSION)
-        #INSERT INTO radcheck (username, attribute, op, value)
-        #VALUES ('{cls.account}', 'Max-All-Traffic', ':=', {const.MAX_ALL_TRAFFIC});
-        execute_query(cls.cnx, query)
+
+        expire_time = datetime.datetime.now() + datetime.timedelta(seconds=const.EXPIRE_TIME)
+        expire_str = expire_time.strftime("%d %b %Y %H:%M:%S")
+
+        queries = [
+            f"INSERT INTO radcheck (username, attribute, op, value) VALUES ('{cls.account}', 'Cleartext-Password', ':=', '{cls.account}');",
+            f"INSERT INTO radcheck (username, attribute, op, value) VALUES ('{cls.account}', 'Max-All-Session', ':=', {const.MAX_ALL_SESSION});",
+            f"INSERT INTO radcheck (username, attribute, op, value) VALUES ('{cls.account}', 'Expiration', ':=', '{expire_str}');",
+            f"INSERT INTO radusergroup (username, groupname) VALUES ('{cls.account}', 'guest');"
+        ]
+        for query in queries:
+            utils.execute_query(cls.cnx, query)
         return cls.account
 
     @classmethod
     def _guest_account_is_used(cls):
         if cls.account is None:
             return True
-        query = "SELECT count(*) FROM radacct WHERE username = {account}".format(account=cls.account)
+        query = f"SELECT count(*) FROM radacct WHERE username = '{cls.account}';"
         return (utils.read_query(cls.cnx, query)[0][0] > 0)
 
     @classmethod
@@ -74,7 +76,7 @@ class QRCodeServer:
         self.hostname = hostname
         self.port = port
         self.webserver = HTTPServer((self.hostname, self.port), HandleServer)
-        print("[SERVER] - http://{h}:{p}".format(h=hostname, p=port))
+        print(f"[SERVER] - http://{self.hostname}:{self.port}")
 
     def run(self):
         try:

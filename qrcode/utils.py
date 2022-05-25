@@ -13,7 +13,7 @@ def get_random_string(length=10):
 def generate_qrcode(text, path='./qrcode.png'):
     img = qrcode.make(text)
     img.save(path)
-    print('[STORE QRCODE] - {p}'.format(p=path))
+    print(f"[STORE QRCODE] - {path}")
     return img
 
 
@@ -30,8 +30,8 @@ def create_mysql_connection(host_name, user_name, user_password, db_name=None):
             database=db_name
         )
         print("MySQL Database connection successful")
-    except mysql.connector.Error as error:
-        print("Error: '{err}'".format(err=error))
+    except mysql.connector.Error as err:
+        print(f"Error: '{err}'")
     return cnx
 
 
@@ -41,8 +41,10 @@ def execute_query(cnx, query):
         cursor.execute(query)
         cnx.commit()
         print("Query successful")
-    except mysql.connector.Error as error:
-        print("Error: '{err}'".format(err=error))
+    except mysql.connector.Error as err:
+        print(f"Error: '{err}'")
+    finally:
+        cursor.close()
 
 
 def read_query(cnx, query):
@@ -51,6 +53,9 @@ def read_query(cnx, query):
     try:
         cursor.execute(query)
         result = cursor.fetchall()
-    except Error as error:
-        print("Error: '{err}'".format(err=error))
+        cnx.commit()
+    except mysql.connector.Error as err:
+        print(f"Error: '{err}'")
+    finally:
+        cursor.close()
     return result
