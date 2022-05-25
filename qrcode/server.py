@@ -53,10 +53,10 @@ class HandleServer(BaseHTTPRequestHandler):
             INSERT INTO radcheck (username, attribute, op, value)
             VALUES ('{cls.account}', 'Max-All-Session', ':=', {const.MAX_ALL_SESSION});
             INSERT INTO radcheck (username, attribute, op, value)
-            VALUES ('{cls.account}', 'Max-All-Traffic', ':=', {const.MAX_ALL_TRAFFIC});
-            INSERT INTO radusergroup (username, groupname)
             VALUES ('{cls.account}', 'guest');
         """
+        #VALUES ('{cls.account}', 'Max-All-Traffic', ':=', {const.MAX_ALL_TRAFFIC});
+        #INSERT INTO radusergroup (username, groupname)
         execute_query(cls.cnx, query)
         return cls.account + cls.password
 
