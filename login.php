@@ -8,7 +8,7 @@ if (isset($_GET['reply'])) {
 function redirect($url)
 {
     // $prama = "?uamip=" . $_GET['uamip'] . "&uamport=" . $_GET['uamport'];
-    header('Location: ' . 'www.google.com', true, 302);
+    header('Location: ' . 'google.html', true, 302);
     exit();
 }
 
