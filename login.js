@@ -4,6 +4,7 @@ var NFC_Available = false;
 var CAM_Available = false;
 nfcButton = document.getElementById('nfcButton');
 qrButton = document.getElementById('qrButton');
+typeinButton = document.getElementById('typeinButton');
 loading = document.getElementById('loading');
 loading.src = "./lib/images/loading.gif";
 
@@ -31,19 +32,21 @@ Html5Qrcode.getCameras().then(devices => {
         CAM_Available = true;
     }
 }).catch(e => { }).then(() => {
+    loading.hidden = true;
+
     if (CAM_Available) {
-        loading.hidden = true;
         qrButton.hidden = false;
     }
     if (NFC_Available) {
-        loading.hidden = true;
         nfcButton.hidden = false;
     }
     if (!(CAM_Available || NFC_Available)) {
-        loading.hidden = true;
         document.getElementById('loginframe').hidden = false;
+    }else{
+        typeinButton.hidden = false;
     }
 });
+
 
 Login = document.getElementById('Login');
 password = document.getElementById('password');
@@ -70,6 +73,11 @@ nfcButton.addEventListener("click", async () => {
     } catch (error) {
         alert(error);
     }
+});
+
+typeinButton.addEventListener('click', () => {
+    typeinButton.hidden = true;
+    document.getElementById('loginframe').hidden = false;
 });
 
 
