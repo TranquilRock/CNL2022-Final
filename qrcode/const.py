@@ -10,6 +10,5 @@ DATABASE = "radius"
 
 # guest account settings
 ACCOUNT_LEN = 16
-PASSWORD_LEN = 16
 MAX_ALL_SESSION = 300 # in second
 MAX_ALL_TRAFFIC = 10485760

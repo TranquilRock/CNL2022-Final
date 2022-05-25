@@ -7,9 +7,8 @@ import const
 class HandleServer(BaseHTTPRequestHandler):
     cnx = utils.create_mysql_connection(const.SQL_HOST,
             const.ROOT_ACCOUNT, const.ROOT_PASSWORD, const.DATABASE)
-    # new guest account and password
+    # new guest account (and same password)
     account = None
-    password = None
 
     def __init__(self, *args, **kwargs):
         super(HandleServer, self).__init__(*args, **kwargs)
@@ -42,19 +41,17 @@ class HandleServer(BaseHTTPRequestHandler):
     @classmethod
     def _create_guest_account(cls):
         cls.account = utils.get_random_string(length=const.ACCOUNT_LEN)
-        cls.password = utils.get_random_string(length=const.PASSWORD_LEN)
-        query = f"SELECT count(*) FROM radcheck WHERE username = {cls.account};"
-        while read_query(cls.cnx, query)[0][0] > 0:
+        query = "SELECT count(*) FROM radcheck WHERE username = {account};".format(account=cls.account)
+        while utils.read_query(cls.cnx, query)[0][0] > 0:
             cls.account = utils.get_random_string(length=const.ACCOUNT_LEN)
-            cls.password = utils.get_random_string(length=const.PASSWORD_LEN)
-        query = f"""
+        query = """
             INSERT INTO radcheck (username, attribute, op, value)
-            VALUES ('{cls.account}', 'Cleartext-Password', ':=', '{cls.password}');
+            VALUES ('{account}', 'Cleartext-Password', ':=', '{account}');
             INSERT INTO radcheck (username, attribute, op, value)
-            VALUES ('{cls.account}', 'Max-All-Session', ':=', {const.MAX_ALL_SESSION});
+            VALUES ('{account}', 'Max-All-Session', ':=', {session});
             INSERT INTO radcheck (username, attribute, op, value)
-            VALUES ('{cls.account}', 'guest');
-        """
+            VALUES ('{account}', 'guest');
+        """.format(account=cls.account, session=const.MAX_ALL_SESSION)
         #VALUES ('{cls.account}', 'Max-All-Traffic', ':=', {const.MAX_ALL_TRAFFIC});
         #INSERT INTO radusergroup (username, groupname)
         execute_query(cls.cnx, query)
@@ -64,8 +61,8 @@ class HandleServer(BaseHTTPRequestHandler):
     def _guest_account_is_used(cls):
         if cls.account is None:
             return True
-        query = f"SELECT count(*) FROM radacct WHERE username = {cls.account};"
-        return (read_query(cls.cnx, query)[0][0] > 0)
+        query = "SELECT count(*) FROM radacct WHERE username = {account}".format(account=cls.account)
+        return (utils.read_query(cls.cnx, query)[0][0] > 0)
 
     @classmethod
     def _remove_all_guest_account(cls):
