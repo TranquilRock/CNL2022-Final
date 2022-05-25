@@ -20,6 +20,8 @@ class HandleServer(BaseHTTPRequestHandler):
             self._handle_root()
         elif self.path.startswith('/qrcode'):
             self._handle_qrcode()
+        elif self.path.startswith('/favicon'):
+            self._handle_favicon()
 
     def _handle_root(self):
         self.send_response(200)
@@ -37,6 +39,13 @@ class HandleServer(BaseHTTPRequestHandler):
         self.send_header("Content-type", "image/png")
         self.end_headers()
         with open('./qrcode.png', 'rb') as f:
+            self.wfile.write(f.read())
+    
+    def _handle_favicon(self):
+        self.send_response(200)
+        self.send_header("Content-type", "/image/jpeg")
+        self.end_headers()
+        with open('./favicon.jpeg', 'rb') as f:
             self.wfile.write(f.read())
 
     @classmethod
