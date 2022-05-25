@@ -2,6 +2,21 @@
 var cameraId = null;
 var NFC_Available = false;
 var CAM_Available = false;
+nfcButton = document.getElementById('nfcButton');
+qrButton = document.getElementById('qrButton');
+
+
+try {
+    new NDEFReader();
+    NFC_Available = true;
+} catch (error) {
+    nfcButton.hidden = true;
+}
+try{
+
+}catch(e){
+
+}
 Html5Qrcode.getCameras().then(devices => {
     console.log(devices); // Show all device in camera.
     var flag = true;
@@ -16,27 +31,20 @@ Html5Qrcode.getCameras().then(devices => {
         cameraId = devices[0].id;
     }
     if(cameraId != null){
-        qrButton.hidden = false;
         CAM_Available = true;
     }
+}).catch(e => {}).then(() => {
+    if (CAM_Available) {
+        qrButton.hidden = false;
+    }
+    if (NFC_Available) {
+        nfcButton.hidden = false;
+    }
+    if (!(CAM_Available || NFC_Available)) {
+        alert("123");
+        document.getElementById('loginframe').hidden = false;
+    }
 });
-
-try {
-    new NDEFReader();
-    NFC_Available = true;
-    nfcButton.hidden = false;
-} catch (error) {
-    console.log(error);
-}
-
-// document.getElementById('loginframe').hidden = false;
-
-nfcButton = document.getElementById('nfcButton');
-qrButton = document.getElementById('qrButton');
-
-
-
-
 
 Login = document.getElementById('Login');
 password = document.getElementById('password');
