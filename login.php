@@ -1,3 +1,35 @@
+<?php
+
+$msg = res_controller($_GET['res']);
+
+if (isset($_GET['reply'])) {
+    $msg = $_GET['reply'];
+}
+function redirect($url)
+{
+    // $prama = "?uamip=" . $_GET['uamip'] . "&uamport=" . $_GET['uamport'];
+    header('Location: ' . 'www.google.com', true, 302);
+    exit();
+}
+
+function res_controller($res)
+{
+    switch ($res) {
+        case 'notyet':
+            return "Please login.";
+        case 'logoff':
+            return "Logout successful.";
+        case 'failed':
+            return "Login failed.";
+        case 'timeout':
+            return "Login request timeout. Try again.";
+        case 'already':
+            return "This IP address already login.";
+        case 'success':
+            redirect("index.php");
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,8 +100,7 @@
 </body>
 
 <script src="lib/js/html5-qrcode.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.js"></script>
+<script src="lib/js/md5.js"></script>
 <script src="login.js"></script>
 
 </html>
