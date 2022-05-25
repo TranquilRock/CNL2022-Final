@@ -41,7 +41,6 @@ Html5Qrcode.getCameras().then(devices => {
         nfcButton.hidden = false;
     }
     if (!(CAM_Available || NFC_Available)) {
-        alert("123");
         document.getElementById('loginframe').hidden = false;
     }
 });
