@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <?php include_once("debug/header.php"); ?>
     <?php include_once("html_comp/header.php"); ?>
-    <?php include_once("debug/header.php"); ?>
+    <!-- <?php include_once("debug/header.php"); ?> -->
 </head>
 
 <body>
@@ -54,10 +55,9 @@
                 <button id="nfcButton"><img class="button" src="./lib/images/nfc.png" /></button>
                 <button id="qrButton"><img class="button" src="./lib/images/qrcode.png" /></button>
             </div>
-
-            <div class="row">
-                <div class="col">
-                    <div style="width:1000px;" id="reader"></div>
+            <div class="row1">
+                <div class="col1">
+                    <div id="reader"></div>
                 </div>
             </div>
         </div>
