@@ -74,7 +74,7 @@ class QRCodeServer:
         self.hostname = hostname
         self.port = port
         self.webserver = HTTPServer((self.hostname, self.port), HandleServer)
-        print(f'[SERVER] - http://{hostname}:{port}')
+        print("[SERVER] - http://{h}:{p}".format(h=hostname, p=port))
 
     def run(self):
         try:
