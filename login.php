@@ -26,7 +26,7 @@ function res_controller($res)
         case 'already':
             return "This IP address already login.";
         case 'success':
-            redirect("google.php");
+            redirect("logout.php");
     }
 }
 ?>
