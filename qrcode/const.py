@@ -12,3 +12,4 @@ DATABASE = "radius"
 ACCOUNT_LEN = 4
 MAX_ALL_SESSION = 60 # in second
 EXPIRE_TIME = 60 # in second
+EXPIRE_ROUND_TO_DATE = False

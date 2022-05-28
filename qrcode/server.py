@@ -33,6 +33,7 @@ class HandleServer(BaseHTTPRequestHandler):
         self.wfile.write(bytes("</body></html>", "utf-8"))
 
     def _handle_qrcode(self):
+        HandleServer._remove_expired_account()
         if HandleServer._guest_account_is_used():
             utils.generate_qrcode(HandleServer._create_guest_account())
         self.send_response(200)
@@ -56,7 +57,10 @@ class HandleServer(BaseHTTPRequestHandler):
             cls.account = utils.get_random_string(length=const.ACCOUNT_LEN)
 
         expire_time = datetime.datetime.now() + datetime.timedelta(seconds=const.EXPIRE_TIME)
-        expire_str = expire_time.strftime("%d %b %Y %H:%M:%S")
+        if const.EXPIRE_ROUND_TO_DATE:
+            expire_str = expire_time.strftime("%d %b %Y")
+        else
+            expire_str = expire_time.strftime("%d %b %Y %H:%M:%S")
 
         queries = [
             f"INSERT INTO radcheck (username, attribute, op, value) VALUES ('{cls.account}', 'Cleartext-Password', ':=', '{cls.account}');",
@@ -76,8 +80,21 @@ class HandleServer(BaseHTTPRequestHandler):
         return (utils.read_query(cls.cnx, query)[0][0] > 0)
 
     @classmethod
-    def _remove_all_guest_account(cls):
-        pass
+    def _remove_expired_account(cls):
+        query = "SELECT (username, value) FROM radcheck WHERE attribute = 'Expiration'"
+        results = utils.read_query(cls.cnx, query)
+        for tmp in results:
+            (username, expire_str) = tmp
+            expire_time = datetime.strptime(expire_str, "%d %b %Y %H:%M:%S")
+            if expire_time < datetime.now():
+                continue
+            queries = [
+                f"DELETE FROM radcheck WHERE username = '{username}'",
+                f"DELETE FROM radacct WHERE username = '{username}'",
+                f"DELETE FROM radusergroup WHERE username = '{username}'"
+            ]
+            for query in queries:
+                utils.execute_query(cls.cnx, query)
 
 
 class QRCodeServer:
