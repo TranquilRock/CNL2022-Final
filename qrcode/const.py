@@ -9,7 +9,7 @@ ROOT_PASSWORD = "123456"
 DATABASE = "radius"
 
 # guest account settings
-ACCOUNT_LEN = 4
+ACCOUNT_LEN = 8
 MAX_ALL_SESSION = 60 # in second
-EXPIRE_TIME = 60 # in second
-EXPIRE_ROUND_TO_DATE = False
+EXPIRE_TIME = 86400 # in second
+EXPIRE_ROUND_TO_DATE = True

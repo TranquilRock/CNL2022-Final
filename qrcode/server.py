@@ -24,18 +24,31 @@ class HandleServer(BaseHTTPRequestHandler):
             self._handle_favicon()
 
     def _handle_root(self):
+        # do not change this
+        HandleServer._remove_expired_account()
+        if HandleServer._guest_account_is_used() or not HandleServer._guest_account_exist():
+            utils.generate_qrcode(HandleServer._create_guest_account())
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         self.end_headers()
-        self.wfile.write(bytes("<html><head><title>Welcome</title></head>", "utf-8"))
-        self.wfile.write(bytes("<center><img src='qrcode' alt='Something went wrong'></center>", "utf-8"))
-        self.wfile.write(bytes("<meta http-equiv='refresh' content='1'>", "utf-8"))
-        self.wfile.write(bytes("</body></html>", "utf-8"))
+        html_str = f"""
+            <html>
+            <head>
+                <title>Welcome</title>
+                <meta http-equiv='refresh' content='1'>
+            </head>
+            <body>
+                <center>Your account: {HandleServer.account}</center>
+                <center>Your password: {HandleServer.account}</center>
+                <center><img src='qrcode' alt='Something went wrong' width="40%"></center>
+            </body>
+            </html>
+        """
+        self.wfile.write(bytes(html_str, "utf-8"))
+        #else:
+        #    self._handle_unchanged()
 
     def _handle_qrcode(self):
-        HandleServer._remove_expired_account()
-        if HandleServer._guest_account_is_used():
-            utils.generate_qrcode(HandleServer._create_guest_account())
         self.send_response(200)
         self.send_header("Content-type", "image/png")
         self.end_headers()
@@ -49,6 +62,10 @@ class HandleServer(BaseHTTPRequestHandler):
         with open('./asset/favicon.png', 'rb') as f:
             self.wfile.write(f.read())
 
+    def _handle_unchanged(self):
+        self.send_response(304)
+        self.end_headers()
+
     @classmethod
     def _create_guest_account(cls):
         cls.account = utils.get_random_string(length=const.ACCOUNT_LEN)
@@ -59,12 +76,12 @@ class HandleServer(BaseHTTPRequestHandler):
         expire_time = datetime.datetime.now() + datetime.timedelta(seconds=const.EXPIRE_TIME)
         if const.EXPIRE_ROUND_TO_DATE:
             expire_str = expire_time.strftime("%d %b %Y")
-        else
+        else:
             expire_str = expire_time.strftime("%d %b %Y %H:%M:%S")
 
         queries = [
             f"INSERT INTO radcheck (username, attribute, op, value) VALUES ('{cls.account}', 'Cleartext-Password', ':=', '{cls.account}');",
-            f"INSERT INTO radcheck (username, attribute, op, value) VALUES ('{cls.account}', 'Max-All-Session', ':=', {const.MAX_ALL_SESSION});",
+            #f"INSERT INTO radcheck (username, attribute, op, value) VALUES ('{cls.account}', 'Max-All-Session', ':=', {const.MAX_ALL_SESSION});",
             f"INSERT INTO radcheck (username, attribute, op, value) VALUES ('{cls.account}', 'Expiration', ':=', '{expire_str}');",
             f"INSERT INTO radusergroup (username, groupname) VALUES ('{cls.account}', 'guest');"
         ]
@@ -80,13 +97,18 @@ class HandleServer(BaseHTTPRequestHandler):
         return (utils.read_query(cls.cnx, query)[0][0] > 0)
 
     @classmethod
+    def _guest_account_exist(cls):
+        query = f"SELECT count(*) FROM radcheck WHERE username = '{cls.account}';"
+        return (utils.read_query(cls.cnx, query)[0][0] > 0)
+
+    @classmethod
     def _remove_expired_account(cls):
-        query = "SELECT (username, value) FROM radcheck WHERE attribute = 'Expiration'"
+        query = "SELECT username, value FROM radcheck WHERE attribute = 'Expiration';"
         results = utils.read_query(cls.cnx, query)
         for tmp in results:
             (username, expire_str) = tmp
-            expire_time = datetime.strptime(expire_str, "%d %b %Y %H:%M:%S")
-            if expire_time < datetime.now():
+            expire_time = datetime.datetime.strptime(expire_str, "%d %b %Y %H:%M:%S")
+            if expire_time > datetime.datetime.now():
                 continue
             queries = [
                 f"DELETE FROM radcheck WHERE username = '{username}'",
