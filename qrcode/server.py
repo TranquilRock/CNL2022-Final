@@ -75,7 +75,7 @@ class HandleServer(BaseHTTPRequestHandler):
 
         expire_time = datetime.datetime.now() + datetime.timedelta(seconds=const.EXPIRE_TIME)
         if const.EXPIRE_ROUND_TO_DATE:
-            expire_str = expire_time.strftime("%d %b %Y")
+            expire_str = expire_time.strftime("%d %b %Y 00:00:00")
         else:
             expire_str = expire_time.strftime("%d %b %Y %H:%M:%S")
 
@@ -108,6 +108,7 @@ class HandleServer(BaseHTTPRequestHandler):
         for tmp in results:
             (username, expire_str) = tmp
             expire_time = datetime.datetime.strptime(expire_str, "%d %b %Y %H:%M:%S")
+
             if expire_time > datetime.datetime.now():
                 continue
             queries = [
