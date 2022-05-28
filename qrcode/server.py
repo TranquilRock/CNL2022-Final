@@ -38,8 +38,8 @@ class HandleServer(BaseHTTPRequestHandler):
                 <meta http-equiv='refresh' content='1'>
             </head>
             <body>
-                <center>Your account: {HandleServer.account}</center>
-                <center>Your password: {HandleServer.account}</center>
+                <center><h1>Your account: {HandleServer.account}</h1></center>
+                <center><h1>Your password: {HandleServer.account}</h1></center>
                 <center><img src='qrcode' alt='Something went wrong' width="40%"></center>
             </body>
             </html>
