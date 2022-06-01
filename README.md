@@ -1,5 +1,6 @@
 # CNL Final 結報
-[Repo](https://github.com/AndyDu01/CNL2022)
+- [Repo](https://github.com/AndyDu01/CNL2022)
+- [Slides](https://docs.google.com/presentation/d/1hOCDbEadS4CPkbE-IiQuwf-A5U5fPKY1s44ugrScy34/edit?usp=sharing)
 ## 專題動機
 我們從日常出發，發現公用網路的不便之處，結合課堂所學的知識，改善登入公共網路的流程。
 一般的公用網路情境下:
@@ -74,18 +75,20 @@ QR code server 為 QR code 顯示器後面的 web server。我們以 Python 實�
 - 登入頁面:
 ![](https://i.imgur.com/S0IbWT3.png)
 - 影片連結:
+[https://www.youtube.com/watch?v=0rrjOjy6sxg](https://www.youtube.com/watch?v=0rrjOjy6sxg)
 
 
 
 
 ## 實驗總結
+- 難題與解決方法：
+    - Free Radius 3 與 Ubuntu 20.04 有版本上的問題，於是我們採用 Free Radius 2 搭配 Ubuntu 16.04
+    - Remote query SQL 在確認訪客是否登入以及是否 expired 較為困難，我們利用定時訪問來確定當下的訪客帳密還能使用。
+    - NFC 以及 QR code 在確認是否有此裝置時遇到 asynchronize 的問題，我們使用 js的 Promise 來確定執行順序。
 
-- 使用 Free Radius 2 搭配 Ubuntu 16.04.7 來當作我們的作業系統。
-- Free Radius 要額外設定跟 expiration 相關的的模組來實作帳號過期的功能。
-- QR code 的登入是給訪客使用，我們使用另一台電腦當作 server 去生成訪客帳號密碼並 remote insert SQL。
-- QR code server 實作訪問 SQL 訪客帳號是否 expired 或是是否已經登入。
-- NFC 屬於實驗性質的API，因此實作資料較少。
-- QR code 在索取鏡頭權限的部分會遇到非同步的問題。
+- 心得：
+	這次 final project ，我們這組利用 lab2 所學到的 Free Radius 系統，配上 QR code 以及 NFC 加快登入網路，其中遇到的困難都被我們一一解決，在過程中，我們更了解如何設定 Free Radius ，加入 expiration 系統，並學會如何遠端操作 SQL，也接觸比較冷門的 web NFC 裝置，學會如何在網站上使用 NFC scanning。
+
 
 ## 分工(貢獻均等，依學號排序)
 - B08201047 許祖源 
