@@ -1,6 +1,7 @@
 # Setup Guide
 
-詳細全設定流程：https://hackmd.io/@Kaiserouo/H1ybQffvc，或是如果連結炸了，你可以看備份`FR_PROCESS.md`。不過因為有一些hackmd的語法所以在github上看起來可能會怪怪的，沒事的話請無視`:::spoiler ... :::`的部分，因為前半段是failed attempt的紀錄。
+詳細全設定流程：https://hackmd.io/@Kaiserouo/H1ybQffvc
+或是如果連結炸了，你可以看備份`FR_PROCESS.md`。不過因為有一些hackmd的語法所以在github上看起來可能會怪怪的，沒事的話請無視`:::spoiler ... :::`的部分，因為前半段是failed attempt的紀錄。
 
 這個project基本上就是在lab2上加東西。**如果未來他們把lab2更新了，請去生他們2022年前的投影片出來或是靠下面的資訊和上面的流程通靈。**
 
